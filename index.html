@@ -1,160 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sliding Testimonials</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Full Testimonial Slider</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-    }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f7f7f7;
+        }
 
-    .testimonial-slider {
-      background: #f7f7f7;
-      padding: 60px 20px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
+        .testimonial-slider {
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+        }
 
-    .slider-wrapper {
-      position: relative;
-      max-width: 1000px;
-      margin: auto;
-    }
+        .slider-wrapper {
+            max-width: 1000px;
+            margin: auto;
+            position: relative;
+        }
 
-    .slider-container {
-      overflow: hidden;
-    }
+        .slider-container {
+            overflow: hidden;
+        }
 
-    .slider {
-      display: flex;
-      transition: transform 0.5s ease;
-    }
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease;
+            touch-action: pan-y;
+            padding: 0 15px;
+            /* Added */
+        }
 
-    .testimonial {
-      flex: 0 0 100%;
-      max-width: 100%;
-      padding: 25px;
-      background: white;
-      margin: 0 15px;
-      border-radius: 15px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-      opacity: 0.5;
-      transform: scale(0.95);
-      transition: all 0.3s ease;
-    }
+        .testimonial {
+            flex: 0 0 100%;
+            max-width: 100%;
+            padding: 25px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            /* Removed margin */
+        }
 
-    .testimonial.active {
-      opacity: 1;
-      transform: scale(1);
-    }
+        .testimonial p {
+            font-size: 1em;
+            font-style: italic;
+            color: #555;
+        }
 
-    .testimonial p {
-      font-size: 1em;
-      font-style: italic;
-      color: #555;
-    }
+        .testimonial h4 {
+            margin-top: 15px;
+            font-size: 1.1em;
+            color: #111;
+        }
 
-    .testimonial h4 {
-      margin-top: 15px;
-      font-size: 1.1em;
-      color: #111;
-    }
+        .nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2em;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #555;
+            transition: color 0.3s;
+            z-index: 1;
+        }
 
-    .nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 2em;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: #555;
-      transition: color 0.3s;
-      z-index: 1;
-    }
+        .nav:hover {
+            color: #000;
+        }
 
-    .nav:hover {
-      color: #000;
-    }
+        .nav.prev {
+            left: -10px;
+        }
 
-    .nav.prev {
-      left: -10px;
-    }
+        .nav.next {
+            right: -10px;
+        }
 
-    .nav.next {
-      right: -10px;
-    }
+        .dots {
+            margin-top: 20px;
+        }
 
-    @media (max-width: 768px) {
-      .testimonial {
-        margin: 0;
-      }
+        .dot {
+            height: 12px;
+            width: 12px;
+            margin: 0 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-      .nav.prev {
-        left: 5px;
-      }
+        .dot.active {
+            background-color: #333;
+        }
 
-      .nav.next {
-        right: 5px;
-      }
-    }
-  </style>
+        @media (max-width: 768px) {
+            .testimonial {
+                margin: 0;
+            }
+
+            .nav.prev {
+                left: 5px;
+            }
+
+            .nav.next {
+                right: 5px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<section class="testimonial-slider">
-  <div class="slider-wrapper">
-    <button class="nav prev" onclick="slideTestimonial(-1)">❮</button>
+    <section class="testimonial-slider">
+        <div class="slider-wrapper">
+            <button class="nav prev" onclick="slideTestimonial(-1)">❮</button>
 
-    <div class="slider-container">
-      <div class="slider" id="testimonialSlider">
-        <div class="testimonial active">
-          <p>"Naween delivered exactly what I imagined – fast and professionally. Highly recommend!"</p>
-          <h4>- Tharindu Perera</h4>
+            <div class="slider-container" id="sliderContainer">
+                <div class="slider" id="testimonialSlider">
+                    <div class="testimonial">
+                        <p>"Naween delivered exactly what I imagined – fast and professionally. Highly recommend!"</p>
+                        <h4>- Tharindu Perera</h4>
+                    </div>
+                    <div class="testimonial">
+                        <p>"Creative, reliable, and great communication. My brand now looks amazing!"</p>
+                        <h4>- Nimesha Jayasuriya</h4>
+                    </div>
+                    <div class="testimonial">
+                        <p>"I loved the poster designs. Turnaround time was excellent!"</p>
+                        <h4>- Dilani Fernando</h4>
+                    </div>
+                </div>
+            </div>
+
+            <button class="nav next" onclick="slideTestimonial(1)">❯</button>
         </div>
-        <div class="testimonial">
-          <p>"Creative, reliable, and great communication. My brand now looks amazing!"</p>
-          <h4>- Nimesha Jayasuriya</h4>
-        </div>
-        <div class="testimonial">
-          <p>"I loved the poster designs. Turnaround time was excellent!"</p>
-          <h4>- Dilani Fernando</h4>
-        </div>
-      </div>
-    </div>
 
-    <button class="nav next" onclick="slideTestimonial(1)">❯</button>
-  </div>
-</section>
+        <div class="dots" id="dots"></div>
+    </section>
 
-<script>
-  let currentIndex = 0;
+    <script>
+        let currentIndex = 0;
+        const slider = document.getElementById("testimonialSlider");
+        const testimonials = document.querySelectorAll(".testimonial");
+        const dotsContainer = document.getElementById("dots");
 
-  function slideTestimonial(direction) {
-    const slider = document.getElementById("testimonialSlider");
-    const testimonials = document.querySelectorAll(".testimonial");
-    const total = testimonials.length;
+        // Create dots
+        testimonials.forEach((_, index) => {
+            const dot = document.createElement("span");
+            dot.classList.add("dot");
+            dot.addEventListener("click", () => {
+                goToSlide(index);
+            });
+            dotsContainer.appendChild(dot);
+        });
 
-    testimonials[currentIndex].classList.remove("active");
+        const dots = document.querySelectorAll(".dot");
 
-    currentIndex += direction;
-    if (currentIndex < 0) currentIndex = total - 1;
-    if (currentIndex >= total) currentIndex = 0;
+        function updateSlider() {
+            const offset = -currentIndex * 100;
+            slider.style.transform = `translateX(${offset}%)`;
 
-    testimonials[currentIndex].classList.add("active");
+            dots.forEach(dot => dot.classList.remove("active"));
+            dots[currentIndex].classList.add("active");
+        }
 
-    // Move slider using translateX
-    const offset = -currentIndex * 100;
-    slider.style.transform = `translateX(${offset}%)`;
-  }
-</script>
+        function slideTestimonial(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = testimonials.length - 1;
+            if (currentIndex >= testimonials.length) currentIndex = 0;
+            updateSlider();
+        }
+
+        function goToSlide(index) {
+            currentIndex = index;
+            updateSlider();
+        }
+
+        // Autoplay
+        setInterval(() => {
+            slideTestimonial(1);
+        }, 5000); // 5 seconds
+
+        // Touch Swipe Support
+        let startX = 0;
+        const container = document.getElementById("sliderContainer");
+
+        container.addEventListener("touchstart", e => {
+            startX = e.touches[0].clientX;
+        });
+
+        container.addEventListener("touchend", e => {
+            const endX = e.changedTouches[0].clientX;
+            const diff = startX - endX;
+
+            if (diff > 50) slideTestimonial(1);      // Swipe left
+            else if (diff < -50) slideTestimonial(-1); // Swipe right
+        });
+
+        // Initialize
+        updateSlider();
+    </script>
 
 </body>
+
 </html>
